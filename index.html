@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>🎈 우리 반 앱 진열장</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts: Gowun Batang / Jua for cute Korean typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@400;600;700&display=swap" rel="stylesheet">
+  
+  <style>
+    body {
+      font-family: 'Noto Sans KR', sans-serif;
+      background: linear-gradient(135deg, #fff5f5 0%, #f0fdf4 50%, #eff6ff 100%);
+      background-attachment: fixed;
+    }
+    .font-jua {
+      font-family: 'Jua', sans-serif;
+    }
+    /* Smooth floating animation */
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-8px); }
+    }
+    .animate-float {
+      animation: float 4s ease-in-out infinite;
+    }
+    /* Card Hover Shadow & Transform */
+    .app-card {
+      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .app-card:hover {
+      transform: translateY(-8px) scale(1.02);
+      box-shadow: 0 20px 25px -5px rgba(255, 182, 193, 0.4), 0 8px 10px -6px rgba(255, 182, 193, 0.2);
+    }
+  </style>
+</head>
+<body class="min-h-screen pb-16 text-slate-700">
+
+  <!-- ========================================== -->
+  <!-- 📌 스크립트: 앱 목록 데이터 설정 영역     -->
+  <!-- ========================================== -->
+  <script>
+    /**
+     * 💡 [선생님 전용 앱 목록 설정]
+     * 아래 APP_LIST 배열에 새로운 앱을 { title, description, url, icon, color } 형식으로 한 줄만 추가하면
+     * 화면에 예쁜 카드가 자동으로 생성됩니다!
+     */
+    const APP_LIST = [
+      {
+        title: "우리 반 단어장",
+        description: "오늘 배운 중요한 낱말과 뜻을 재미있게 복습해요!",
+        url: "https://voca.com",
+        icon: "📖",
+        tag: "국어",
+        badgeColor: "bg-amber-100 text-amber-800"
+      },
+      {
+        title: "집중 타이머",
+        description: "째깍째깍! 우리 반의 집중 시간을 도와주는 귀여운 타이머",
+        url: "https://timer.com",
+        icon: "⏱️",
+        tag: "학급운영",
+        badgeColor: "bg-rose-100 text-rose-800"
+      },
+      {
+        title: "모둠 활동 룰렛",
+        description: "두근두근! 발표자나 모둠 순서를 공정하게 정해보아요.",
+        url: "https://roulette.com",
+        icon: "🎡",
+        tag: "학급운영",
+        badgeColor: "bg-emerald-100 text-emerald-800"
+      },
+      {
+        title: "신나는 패들렛",
+        description: "친구들의 멋진 생각과 작품을 자유롭게 나누는 공간",
+        url: "https://padlet.com",
+        icon: "🎨",
+        tag: "모둠활동",
+        badgeColor: "bg-sky-100 text-sky-800"
+      },
+      {
+        title: "수학 탐구 놀이터",
+        description: "게임처럼 재미있게 풀어보는 오늘의 수학 문제",
+        url: "https://math.com",
+        icon: "🧩",
+        tag: "수학",
+        badgeColor: "bg-purple-100 text-purple-800"
+      },
+      {
+        title: "디지털 교과서",
+        description: "언제 어디서나 볼 수 있는 똑똑한 우리 반 교과서",
+        url: "https://textbook.com",
+        icon: "💻",
+        tag: "수업자료",
+        badgeColor: "bg-indigo-100 text-indigo-800"
+      }
+      // ✏️ 여기에 새 앱을 계속 추가할 수 있어요!
+      // 예시: { title: "새로운 앱", description: "설명글", url: "https://주소", icon: "⭐", tag: "기타", badgeColor: "bg-pink-100 text-pink-800" }
+    ];
+  </script>
+
+  <!-- 메인 헤더 영역 -->
+  <header class="pt-10 pb-6 px-4 text-center">
+    <div class="max-w-4xl mx-auto">
+      <div class="inline-block px-4 py-1.5 mb-3 bg-white/80 backdrop-blur-md border border-pink-200 rounded-full text-pink-600 font-semibold text-sm shadow-sm animate-float">
+        ✨ 즐겁고 신나는 우리 교실
+      </div>
+      <h1 class="font-jua text-4xl sm:text-5xl md:text-6xl text-slate-800 tracking-wide mb-3 drop-shadow-sm">
+        🎈 우리 반 앱 진열장 🎈
+      </h1>
+      <p class="text-slate-600 text-base sm:text-lg font-medium max-w-xl mx-auto">
+        오늘 수업에 필요한 앱들을 한눈에 확인하고 터치해 보세요!
+      </p>
+    </div>
+  </header>
+
+  <!-- 검색 & 필터 영역 (선택사항) -->
+  <div class="max-w-5xl mx-auto px-4 mb-8">
+    <div class="relative max-w-md mx-auto">
+      <input 
+        type="text" 
+        id="searchInput"
+        placeholder="🔍 찾고 싶은 앱 이름이나 설명을 입력해요..." 
+        class="w-full px-5 py-3.5 rounded-full border-2 border-pink-200 bg-white/90 backdrop-blur focus:outline-none focus:border-pink-400 shadow-sm text-slate-700 placeholder-slate-400 text-sm sm:text-base transition-all"
+        onkeyup="filterApps()"
+      />
+    </div>
+  </div>
+
+  <!-- 앱 카드가 배치될 그리드 레이아웃 -->
+  <main class="max-w-6xl mx-auto px-4">
+    <div 
+      id="appGrid" 
+      class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8"
+    >
+      <!-- JavaScript를 통해 이 곳에 카드가 생성됩니다 -->
+    </div>
+
+    <!-- 검색 결과 없음 메세지 -->
+    <div id="emptyMessage" class="hidden text-center py-16">
+      <div class="text-5xl mb-3">🐱❓</div>
+      <p class="text-slate-500 font-medium text-lg">찾으시는 앱이 없어요. 다시 검색해 볼까요?</p>
+    </div>
+  </main>
+
+  <!-- 하단 푸터 -->
+  <footer class="mt-20 text-center text-xs sm:text-sm text-slate-400 font-medium">
+    <p>🌱 우리 반을 위한 배움터 | 깨끗하고 안전한 디지털 교실 ☀️</p>
+  </footer>
+
+  <!-- 카드 동적 생성 및 검색 스크립트 -->
+  <script>
+    // 앱 그리드에 카드렌더링 함수
+    function renderApps(apps) {
+      const grid = document.getElementById('appGrid');
+      const emptyMsg = document.getElementById('emptyMessage');
+      
+      grid.innerHTML = '';
+
+      if (apps.length === 0) {
+        emptyMsg.classList.remove('hidden');
+        return;
+      } else {
+        emptyMsg.classList.add('hidden');
+      }
+
+      apps.forEach(app => {
+        // 카드 HTML 요소 생성
+        const cardAnchor = document.createElement('a');
+        cardAnchor.href = app.url;
+        cardAnchor.target = '_blank'; // 새 탭에서 열기
+        cardAnchor.rel = 'noopener noreferrer'; // 보안 최적화
+        cardAnchor.className = 'app-card block bg-white/90 backdrop-blur border-2 border-pink-100 rounded-3xl p-6 shadow-md hover:border-pink-300 relative overflow-hidden group cursor-pointer';
+
+        cardAnchor.innerHTML = `
+          <!-- 우측 상단 태그 -->
+          <span class="absolute top-4 right-4 px-3 py-1 rounded-full text-xs font-bold ${app.badgeColor || 'bg-slate-100 text-slate-700'}">
+            ${app.tag || '앱'}
+          </span>
+
+          <div class="flex items-center space-x-4 mb-3">
+            <!-- 이모지 아이콘 박스 -->
+            <div class="w-16 h-16 sm:w-18 sm:h-18 flex items-center justify-center rounded-2xl bg-gradient-to-br from-pink-50 to-orange-50 border border-pink-100 text-3xl sm:text-4xl shadow-inner group-hover:scale-110 transition-transform">
+              ${app.icon || '📌'}
+            </div>
+            
+            <div>
+              <h2 class="font-jua text-xl sm:text-2xl text-slate-800 group-hover:text-pink-600 transition-colors">
+                ${app.title}
+              </h2>
+              <span class="inline-flex items-center text-xs font-semibold text-pink-400 
